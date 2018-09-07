@@ -1,0 +1,9 @@
+{
+    "structure": "default",
+    "mentions": [
+        "ner",
+        "wikipedia"
+    ],
+    "nbest": false,
+    "customisation": "generic"
+}
