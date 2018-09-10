@@ -21,7 +21,7 @@ import (
 // Binary represents a GridFS document in the anhalytics database
 type Binary struct {
 	ID           bson.ObjectId `bson:"_id"`
-	AnhalyticsID bson.ObjectId `bson:"anhalyticsId"`
+	AnhalyticsID string        `bson:"anhalyticsId"`
 	Filename     string        `bson:"filename"`
 	Aliases      interface{}   `bson:"aliases"`
 	ChunkSize    int64         `bson:"chunkSize"`
@@ -145,7 +145,7 @@ func doFishingRequest(client *http.Client, fileID, halID bson.ObjectId, session 
 	defer conn.Close()
 
 	nerdcon := conn.DB(datab).C("pdf_nerd_annotations")
-	meta := conn.DB(datab).C("biblio_bjects")
+	meta := conn.DB(datab).C("biblio_objects")
 
 	var bibObject map[string]interface{}
 
@@ -198,8 +198,8 @@ func fish() time.Duration {
 	for iter.Next(&result) {
 		var halID, fileID bson.ObjectId
 		fileID = result.ID
-		halID = result.AnhalyticsID
-		fmt.Println(result)
+		halID = bson.ObjectIdHex(result.AnhalyticsID)
+		//fmt.Println(result)
 
 		wg.Add(1)
 		go func(fileID, halID bson.ObjectId) {
